@@ -14,3 +14,5 @@ Route::get('/seat-plans/{eventId}/{ticketCategoryId}', function ($eventId, $tick
 
     return view('seat-plans.index', compact('event', 'ticketCategory'));
 })->name('get-ticket');
+
+Route::resource('payments', \App\Http\Controllers\PaymentController::class);

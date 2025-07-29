@@ -10,9 +10,14 @@
                 </h1>
                 <h4 class="text-2xl font-bold text-gray-400   dark:text-white"> {{ $event->venue->name }}</h4>
 
+                <p class="  text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-gray-200">
+                    {{ $event->venue->address }}
+                </p>
                 <p class="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed dark:text-gray-200">
                     {{ $event->description }}
                 </p>
+
+
 
                 <div class="mt-4 flex gap-4 sm:mt-6">
 
