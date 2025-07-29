@@ -3,12 +3,12 @@
 @section('content')
     <div class="container mx-auto">
         <h1 class="text-2xl font-bold mb-4">Events</h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             @foreach ($events as $event)
                 <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-                    <img src="{{ asset($event->image) }}" alt="{{ $event->name }}"
+                    <img src="{{ asset($event->image) }}" alt="{{ $event->title }}"
                         class="w-full h-48 object-cover rounded-t-lg mb-4">
-                    <h2 class="text-xl font-semibold">{{ $event->name }}</h2>
+                    <h2 class="text-xl font-semibold">{{ $event->title }}</h2>
                     <p class="text-gray-600 dark:text-gray-400">{{ $event->event_date }}</p>
                     <p class="mt-2">{{ $event->venue->name }}</p>
                     <a href="{{ route('events.show', $event->id) }}"
