@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('ticket_categories', function (Blueprint $table) {
             $table->id();
-            $table->enum('category', ['Genel Giriş', 'Protokol']);
+            $table->string('category');
+            $table->float('price');
             $table->timestamps();
         });
     }

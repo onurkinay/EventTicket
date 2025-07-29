@@ -1,7 +1,7 @@
 @extends('events.layout.app')
-
+@section('title', 'Events')
 @section('content')
-    <div class="container mx-auto">
+    <div class="container mx-auto p-25">
         <h1 class="text-2xl font-bold mb-4">Events</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             @foreach ($events as $event)

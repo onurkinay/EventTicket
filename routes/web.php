@@ -7,3 +7,10 @@ Route::get('/', function () {
 });
 
 Route::resource('events', \App\Http\Controllers\EventController::class);
+
+Route::get('/seat-plans/{eventId}/{ticketCategoryId}', function ($eventId, $ticketCategoryId) {
+    $event = \App\Models\Event::findOrFail($eventId);
+    $ticketCategory = \App\Models\TicketCategory::findOrFail($ticketCategoryId);
+
+    return view('seat-plans.index', compact('event', 'ticketCategory'));
+})->name('get-ticket');
