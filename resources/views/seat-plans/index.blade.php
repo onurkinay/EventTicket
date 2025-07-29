@@ -62,7 +62,6 @@
                                     <th class="text-left font-semibold w-25 ">Event</th>
                                     <th class="text-left font-semibold w-25">Price at a ticket</th>
                                     <th class="text-left font-semibold w-25">Seats</th>
-                                    <th class="text-left font-semibold w-25">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,7 +76,7 @@
                                     <td class="py-4" id="selectedSeatsText">
                                         No Selected
                                     </td>
-                                    <td class="py-4" id="totalAmount">$0.00</td>
+
                                 </tr>
                                 <!-- More product rows -->
                             </tbody>
@@ -97,17 +96,35 @@
                     </div>
                 </div>
                 <div class="md:w-1/4">
-
                     <form method="POST" action="{{ route('events.store') }}">
                         @csrf
-                        <input type="hidden" name="event_id" value="{{ $event->id }}">
-                        <input type="hidden" name="ticket_category_id" value="{{ $ticketCategory->id }}">
-                        <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="[]">
-                        <input type="hidden" name="selected_seats_letters" id="selectedSeatsLettersInput"
-                            value="[]">
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold mb-4">Summary</h2>
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal</span>
+                                <span><span id="subtotalAmount">$0.00</span></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Taxes</span>
+                                <span><span id="taxesAmount">$0.00</span></span>
+                            </div>
 
-                        <button id="checkoutButton" type="submit"
-                            class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
+                            <hr class="my-2">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold">Total</span>
+                                <span class="font-semibold" id="totalAmountSummary">$0.00</span>
+                            </div>
+                            <input type="hidden" name="event_id" value="{{ $event->id }}">
+                            <input type="hidden" name="ticket_category_id" value="{{ $ticketCategory->id }}">
+                            <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="[]">
+                            <input type="hidden" name="selected_seats_letters" id="selectedSeatsLettersInput"
+                                value="[]">
+
+                            <button id="checkoutButton" type="submit"
+                                class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
+
+                        </div>
+
                 </div>
 
                 </form>
@@ -126,7 +143,7 @@
         const seatGap = 10;
         const startX = 50;
         const startY = 30;
-        const occupiedSeats = [2, 5, 10, 17, 25]; //dolu koltukları
+        const occupiedSeats = @json($occupiedSeats); //dolu koltukları
         const rowLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
         document.getElementById('checkoutButton').disabled = true;
@@ -174,13 +191,16 @@
                         const taxes = total * 0.18;
                         const totalWithTaxes = total + taxes;
 
-                        document.querySelector('td:nth-child(4)').textContent = totalText;
                         document.querySelector('td:nth-child(3)').textContent = selectedSeatsText ||
                             'No Selected';
 
-                        document.getElementById('totalAmount').textContent = `$${totalWithTaxes.toFixed(2)}`;
                         document.getElementById('selectedSeatsInput').value = JSON.stringify(Array.from(
                             selectedSeatsNoLetter));
+
+                        document.getElementById('subtotalAmount').textContent = `$${total.toFixed(2)}`;
+                        document.getElementById('taxesAmount').textContent = `$${taxes.toFixed(2)}`;
+                        document.getElementById('totalAmountSummary').textContent = `$${totalWithTaxes.toFixed(2)}`;
+
 
                         document.getElementById('selectedSeatsLettersInput').value = JSON.stringify(Array.from(
                             selectedSeats));
