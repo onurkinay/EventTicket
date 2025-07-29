@@ -46,15 +46,13 @@
     <div class="bg-gray-100   py-8">
         <div class="container mx-auto px-4">
             <h1 class="text-2xl font-semibold mb-4">Buy Ticket</h1>
-            @if ($errors->any())
-                <ul class="text-red-600">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
 
-            <form method="POST" action="{{ route('payments.store') }}">
+            <ul class="text-red-600 display-none" id="errorList">
+
+            </ul>
+
+
+            <form id="paymentForm">
                 @csrf
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="md:w-3/4">
@@ -185,16 +183,109 @@
                             <input type="hidden" name="selected_seats_letters" id="selectedSeatsLettersInput"
                                 value="{{ implode(',', $selectedSeatsLetters) }}">
                             <button id="checkoutButton" type="submit"
-                                class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Pay Now!</button>
+                                class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full cursor-pointer">Pay
+                                Now!</button>
                         </div>
 
                     </div>
                 </div>
 
             </form>
+
+            <div id="myModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                <div class="bg-white p-6 rounded-lg shadow-xl w-96 relative">
+                    <h2 class="text-xl font-bold mb-4">Payment Confirmation</h2>
+                    <p class="mb-4 text-gray-700">Your payment has been successfully processed. Your event details are
+                        as follows:</p>
+                    <div class="mb-4">
+                        <strong>Event:</strong> {{ $event->title }}<br>
+                        <strong>Date:</strong> {{ $event->event_date }}<br>
+                        <strong>Venue:</strong> {{ $event->venue->name }}<br>
+                        <strong>Seats:</strong> {{ implode(', ', $selectedSeatsLetters) }}<br>
+                        <strong>Total Amount:</strong> ${{ number_format($totalWithTaxes, 2) }}
+                    </div>
+                    <p class="text-green-600 font-semibold">Thank you for your purchase!</p>
+                    <p class="text-sm text-gray-500 mt-2">You will receive a confirmation email shortly.</p>
+                    <button onclick="closeModal()"
+                        class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl leading-none">&times;</button>
+                    <button onclick="closeModal()"
+                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Close</button>
+                </div>
+            </div>
         </div>
     </div>
+    <script>
+        function closeModal() {
+            window.location.href = '/events'; // Ana sayfaya yönlendir
+        }
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Formun sayfayı yenilemesini engelle
+            document.getElementById('checkoutButton').disabled = true; // Butonu devre dışı bırak
+            document.getElementById('checkoutButton').innerText = 'Processing...'; // Buton metnini değiştir
+            document.getElementById('checkoutButton').classList.add('opacity-50',
+                'cursor-not-allowed'); // Buton stilini değiştir
 
+            document.getElementById('errorList').classList.add('display-none'); // Hata listesini gizle
+            const form = e.target;
+            const formData = new FormData(form);
+
+            fetch('/payments', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Başarılı:', data);
+                    if (data.errors) {
+                        const errorList = document.getElementById('errorList');
+                        errorList.classList.remove('display-none');
+                        errorList.innerHTML = ''; // Önceki hataları temizle
+
+                        // Hataları işleyin
+                        console.error('Hatalar:', data.errors);
+                        document.getElementById('checkoutButton').disabled = false; // Butonu tekrar etkinleştir
+                        document.getElementById('checkoutButton').innerText =
+                            'Pay Now!'; // Buton metnini geri al
+                        document.getElementById('checkoutButton').classList.remove('opacity-50',
+                            'cursor-not-allowed'); // Buton stilini geri al
+                        if (data.errors && typeof data.errors === 'object') {
+                            for (const field in data.errors) {
+                                if (Array.isArray(data.errors[field])) {
+                                    data.errors[field].forEach((message) => {
+                                        const li = document.createElement('li');
+                                        li.textContent = message;
+                                        errorList.appendChild(li);
+                                    });
+                                }
+                            }
+                        }
+                        //yuukarıya at
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        return;
+                    }
+                    document.getElementById('checkoutButton').innerText =
+                        'Payment Successful!'; // Başarılı mesajı
+                    document.getElementById('checkoutButton').classList.remove('bg-blue-500',
+                        'text-white'); // Buton stilini kaldır
+                    document.getElementById('checkoutButton').classList.add('bg-green-500',
+                        'text-white'); // Başarılı stil
+                    document.getElementById('checkoutButton').disabled = true; // Butonu devre dışı bırak
+
+                    document.getElementById('myModal').classList.remove('hidden');
+                    document.getElementById('myModal').classList.add('flex');
+
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                });
+        });
+    </script>
 </body>
 
 </html>

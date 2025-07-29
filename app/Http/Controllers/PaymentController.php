@@ -135,8 +135,7 @@ class PaymentController extends Controller
         // Clear the session data after payment
         Session::forget(['event_id', 'ticket_category_id', 'selected_seats', 'selected_seats_letters']);
 
-        // Optionally, you can redirect to a success page or show a success message
-        return json_encode([
+        return response()->json([
             'status' => 'success',
             'message' => 'Payment successful!',
             'order_id' => $order->id,
