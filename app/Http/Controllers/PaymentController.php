@@ -65,30 +65,37 @@ class PaymentController extends Controller
             'exp_year' => 'required|integer|digits:4',
             'cvv' => 'required|string|max:4',
         ], [
-            'customer_name.required' => 'Ad alanı zorunludur.',
-            'customer_name.string' => 'Ad geçerli bir metin olmalıdır.',
-            'customer_name.max' => 'Ad 255 karakterden uzun olamaz.',
-            'customer_surname.required' => 'Soyad alanı zorunludur.',
-            'customer_surname.string' => 'Soyad geçerli bir metin olmalıdır.',
-            'customer_surname.max' => 'Soyad 255 karakterden uzun olamaz.',
-            'customer_email.required' => 'E-posta alanı zorunludur.',
-            'customer_email.email' => 'Geçerli bir e-posta adresi giriniz.',
-            'customer_email.max' => 'E-posta 255 karakterden uzun olamaz.',
-            'customer_phone.required' => 'Telefon numarası zorunludur.',
-            'customer_phone.string' => 'Telefon numarası geçerli bir metin olmalıdır.',
-            'customer_phone.max' => 'Telefon numarası 20 karakterden uzun olamaz.',
-            'card_number.required' => 'Kart numarası zorunludur.',
-            'card_number.string' => 'Kart numarası geçerli bir metin olmalıdır.',
-            'card_number.max' => 'Kart numarası en fazla 20 karakter olabilir.',
-            'exp_month.required' => 'Son kullanma ayı zorunludur.',
-            'exp_month.integer' => 'Son kullanma ayı geçerli bir sayı olmalıdır.',
-            'exp_month.between' => 'Son kullanma ayı 1 ile 12 arasında olmalıdır.',
-            'exp_year.required' => 'Son kullanma yılı zorunludur.',
-            'exp_year.integer' => 'Son kullanma yılı geçerli bir sayı olmalıdır.',
-            'exp_year.digits' => 'Son kullanma yılı 4 haneli bir sayı olmalıdır.',
-            'cvv.required' => 'CVV alanı zorunludur.',
-            'cvv.string' => 'CVV geçerli bir metin olmalıdır.',
-            'cvv.max' => 'CVV en fazla 4 karakter olabilir.',
+            'customer_name.required' => 'First name is required.',
+            'customer_name.string' => 'First name must be a valid text.',
+            'customer_name.max' => 'First name may not be greater than 255 characters.',
+
+            'customer_surname.required' => 'Last name is required.',
+            'customer_surname.string' => 'Last name must be a valid text.',
+            'customer_surname.max' => 'Last name may not be greater than 255 characters.',
+
+            'customer_email.required' => 'Email address is required.',
+            'customer_email.email' => 'Please enter a valid email address.',
+            'customer_email.max' => 'Email address may not be greater than 255 characters.',
+
+            'customer_phone.required' => 'Phone number is required.',
+            'customer_phone.string' => 'Phone number must be a valid text.',
+            'customer_phone.max' => 'Phone number may not be greater than 20 characters.',
+
+            'card_number.required' => 'Card number is required.',
+            'card_number.string' => 'Card number must be a valid text.',
+            'card_number.max' => 'Card number may not be greater than 20 characters.',
+
+            'exp_month.required' => 'Expiration month is required.',
+            'exp_month.integer' => 'Expiration month must be a valid number.',
+            'exp_month.between' => 'Expiration month must be between 1 and 12.',
+
+            'exp_year.required' => 'Expiration year is required.',
+            'exp_year.integer' => 'Expiration year must be a valid number.',
+            'exp_year.digits' => 'Expiration year must be a 4-digit number.',
+
+            'cvv.required' => 'CVV is required.',
+            'cvv.string' => 'CVV must be a valid text.',
+            'cvv.max' => 'CVV may not be greater than 4 characters.',
         ]);
 
         $selectedSeats = explode(',', substr($request->selected_seats, 1, -1)); // Assuming selected_seats is a comma-separated string
