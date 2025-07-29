@@ -103,6 +103,8 @@
                         <input type="hidden" name="event_id" value="{{ $event->id }}">
                         <input type="hidden" name="ticket_category_id" value="{{ $ticketCategory->id }}">
                         <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="[]">
+                        <input type="hidden" name="selected_seats_letters" id="selectedSeatsLettersInput"
+                            value="[]">
 
                         <button id="checkoutButton" type="submit"
                             class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Checkout</button>
@@ -179,6 +181,9 @@
                         document.getElementById('totalAmount').textContent = `$${totalWithTaxes.toFixed(2)}`;
                         document.getElementById('selectedSeatsInput').value = JSON.stringify(Array.from(
                             selectedSeatsNoLetter));
+
+                        document.getElementById('selectedSeatsLettersInput').value = JSON.stringify(Array.from(
+                            selectedSeats));
 
                         if (selectedSeats.size === 0) {
                             document.getElementById('checkoutButton').disabled = true;

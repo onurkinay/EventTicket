@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
+            $table->integer('seat_index');
+            $table->string('seat_with_letter');
+
             $table->timestamps();
         });
     }

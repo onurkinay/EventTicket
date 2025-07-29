@@ -105,12 +105,19 @@
                                         class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none">
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-4 mt-4">
+                                <div class="grid grid-cols-3 gap-4 mt-4">
                                     <div>
-                                        <label for="exp_date"
+                                        <label for="exp_month"
                                             class="block text-gray-700 dark:text-white mb-1">Expiration
-                                            Date</label>
-                                        <input type="text" id="exp_date" name="exp_date"
+                                            Month</label>
+                                        <input type="text" id="exp_month" name="exp_month"
+                                            class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none">
+                                    </div>
+                                    <div>
+                                        <label for="exp_year"
+                                            class="block text-gray-700 dark:text-white mb-1">Expiration
+                                            Year</label>
+                                        <input type="text" id="exp_year" name="exp_year"
                                             class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none">
                                     </div>
                                     <div>
@@ -136,6 +143,10 @@
                             <div class="flex justify-between mb-2">
                                 <span>{{ $event->title }}</span>
                                 <span><span id="subtotalAmount">{{ count($selectedSeats) }} SEATS</span></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span>Ticket</span>
+                                <span><span id="taxesAmount">{{ $ticketCategory->category }}</span></span>
                             </div>
                             <div class="flex justify-between mb-2">
                                 <span>Date</span>
@@ -169,8 +180,10 @@
                             </div>
                             <input type="hidden" name="event_id" value="{{ $event->id }}">
                             <input type="hidden" name="ticket_category_id" value="{{ $ticketCategory->id }}">
-                            <input type="hidden" name="selected_seats" id="selectedSeatsInput" value="">
-
+                            <input type="hidden" name="selected_seats" id="selectedSeatsInput"
+                                value="{{ implode(',', $selectedSeats) }}">
+                            <input type="hidden" name="selected_seats_letters" id="selectedSeatsLettersInput"
+                                value="{{ implode(',', $selectedSeatsLetters) }}">
                             <button id="checkoutButton" type="submit"
                                 class="bg-blue-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Pay Now!</button>
                         </div>

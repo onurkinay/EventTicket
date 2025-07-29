@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->float('total_amount');
             $table->string('cc_number');
-            $table->string('cc_exp_mounth');
+            $table->string('cc_exp_month');
             $table->string('cc_exp_year');
             $table->string('cc_cvv');
 

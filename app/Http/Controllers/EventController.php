@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class EventController extends Controller
 {
@@ -84,9 +84,10 @@ class EventController extends Controller
         ]);
 
         dd($validated);*/
-        Cache::put('event_id', $request->event_id);
-        Cache::put('ticket_category_id', $request->ticket_category_id);
-        Cache::put('selected_seats', $request->selected_seats);
+        Session::put('event_id', $request->event_id);
+        Session::put('ticket_category_id', $request->ticket_category_id);
+        Session::put('selected_seats', $request->selected_seats);
+        Session::put('selected_seats_letters', $request->selected_seats_letters);
 
         return redirect()->route('payments.index');
         // Store the payment and redirect to the payment index
